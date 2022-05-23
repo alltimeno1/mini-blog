@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('', async (req, res) => {
   const posts = await Posts.find().sort({ postedDate: -1 })
   
-  res.render('index.ejs', { posts })
+  res.json({ posts })
 })
 
 router.get('/:postId', async (req, res) => {
