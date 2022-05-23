@@ -5,14 +5,18 @@ const port = 3000
 
 connect()
 
-const Router = require('./routes/goods')
+const Router = require('./routes/posts')
 
 const requestMiddleware = (req, res, next) => {
   console.log(req.originalUrl, new Date())
   next()
 }
 
+app.use(express.static('views'))
+app.set('view engine', 'ejs')
+
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(requestMiddleware)
 
 app.use('/', Router)
