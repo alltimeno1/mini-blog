@@ -16,7 +16,7 @@ router.get('/:postId', async (req, res) => {
   res.json({ post })
 })
 
-router.post('/write', async (req, res) => {
+router.post('', async (req, res) => {
   const { userId, title, password, content } = req.body
 
   await Counts.updateOne({ countId: 'posts' }, { $inc: { counts: 1 } })
@@ -38,7 +38,7 @@ router.post('/write', async (req, res) => {
   res.json(newPost)
 })
 
-router.put('/:postId/update', async (req, res) => {
+router.put('/:postId', async (req, res) => {
   const { postId } = req.params
   const { userId, title, password, content } = req.body
 
@@ -49,7 +49,7 @@ router.put('/:postId/update', async (req, res) => {
   res.json({ post })
 })
 
-router.delete('/:postId/delete', async (req, res) => {
+router.delete('/:postId', async (req, res) => {
   const { postId } = req.params
   const { password } = req.body
 

@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(requestMiddleware)
 
-app.use('/', Router)
+app.use('/posts', Router)
 
 app.listen(port, () => {
   console.log(port, '포트 실행')
