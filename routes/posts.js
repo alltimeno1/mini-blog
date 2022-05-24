@@ -2,16 +2,22 @@ const express = require('express')
 const Posts = require('../schemas/post')
 const Counts = require('../schemas/count')
 const router = express.Router()
+const fields = 'postId userId title content postedDate'
 
 router.get('', async (req, res) => {
-  const posts = await Posts.find().sort({ postedDate: -1 })
+  const posts = await Posts
+    .find()
+    .select(fields)
+    .sort({ postedDate: -1 })
   
   res.json({ posts })
 })
 
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params
-  const post = await Posts.find({ postId })
+  const post = await Posts
+    .find({ postId })
+    .select(fields)
   
   res.json({ post })
 })
