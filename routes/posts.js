@@ -19,6 +19,12 @@ router.get('/:postId', async (req, res) => {
 router.post('', async (req, res) => {
   const { userId, title, password, content } = req.body
 
+  const postsCount = await Counts.find({ countId: 'posts' })
+  
+  if (!postsCount.length) {
+    await Counts.create({ countId: 'posts', counts: 0 })
+  }
+
   await Counts.updateOne({ countId: 'posts' }, { $inc: { counts: 1 } })
 
   const postId = (await Counts.find({ countId: 'posts' }))[0].counts
