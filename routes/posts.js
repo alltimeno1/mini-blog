@@ -1,32 +1,28 @@
 const express = require('express')
 const Posts = require('../schemas/post')
 const Counts = require('../schemas/count')
+const auth = require('../middlewares/auth')
 const router = express.Router()
 const fields = 'postId userId title content postedDate'
 
 router.get('', async (req, res) => {
-  const posts = await Posts
-    .find()
-    .select(fields)
-    .sort({ postedDate: -1 })
-  
+  const posts = await Posts.find().select(fields).sort({ postedDate: -1 })
+
   res.json({ posts })
 })
 
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params
-  const post = await Posts
-    .find({ postId })
-    .select(fields)
-  
+  const post = await Posts.find({ postId }).select(fields)
+
   res.json({ post })
 })
 
-router.post('', async (req, res) => {
+router.post('', auth, async (req, res) => {
   const { userId, title, password, content } = req.body
 
   const postsCount = await Counts.find({ countId: 'posts' })
-  
+
   if (!postsCount.length) {
     await Counts.create({ countId: 'posts', counts: 0 })
   }
@@ -42,31 +38,31 @@ router.post('', async (req, res) => {
     title,
     password,
     content,
-    postedDate
+    postedDate,
   }
-  
+
   await Posts.create(newPost)
-  
+
   res.json(newPost)
 })
 
-router.put('/:postId', async (req, res) => {
+router.put('/:postId', auth, async (req, res) => {
   const { postId } = req.params
   const { userId, title, password, content } = req.body
 
   await Posts.updateOne({ postId, password }, { userId, title, content })
 
   const post = await Posts.findOne({ postId })
-  
+
   res.json({ post })
 })
 
-router.delete('/:postId', async (req, res) => {
+router.delete('/:postId', auth, async (req, res) => {
   const { postId } = req.params
   const { password } = req.body
 
   await Posts.deleteOne({ postId, password })
-  
+
   res.json({ message: '삭제 완료' })
 })
 
