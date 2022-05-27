@@ -46,13 +46,22 @@ router.post('/:postId/comments', auth, async (req, res) => {
 router.patch('/:postId/comments', auth, async (req, res) => {
   const { postId } = req.params
   const { content, commentId } = req.body
-  const { userId } = res.locals.user
+  const { nickname } = res.locals.user
 
-  await Comments.updateOne({ postId, commentId, userId }, { content })
+  await Comments.updateOne({ postId, commentId, nickname }, { content })
 
   const comment = await Comments.findOne({ commentId })
 
   res.json({ comment })
+})
+
+router.delete('/:postId/comments/:commentId', auth, async (req, res) => {
+  const { postId, commentId } = req.params
+  const { nickname } = res.locals.user
+
+  await Comments.deleteMany({ postId, commentId, nickname })
+
+  res.json({ message: `${commentId}번 댓글이 삭제되었습니다.` })
 })
 
 module.exports = router

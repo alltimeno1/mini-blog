@@ -24,7 +24,12 @@ router.post('/new', async (req, res) => {
   const { nickname, password, confirmPassword } = req.body
   const schema = Joi.object({
     nickname: Joi.string().alphanum().min(3).required(),
-    password: Joi.string().min(4).required(), // nickname 미포함
+    password: Joi.string()
+      .custom((value, helpers) =>
+        value.includes('abc') ? helpers.error('invalid password') : value
+      )
+      .min(4)
+      .required(),
     confirmPassword: Joi.ref('password'),
   })
 
@@ -41,7 +46,7 @@ router.post('/new', async (req, res) => {
 
     return res.json({ message: '회원 가입이 완료되었습니다.' })
   } catch (error) {
-    return res.status(400).json({ message: '닉네임과 비밀번호 규칙을 지켜주세요!', err })
+    return res.status(400).json({ message: '닉네임과 비밀번호 규칙을 지켜주세요!', error })
   }
 })
 
