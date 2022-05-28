@@ -3,17 +3,27 @@ const Posts = require('../schemas/post')
 const Counts = require('../schemas/count')
 const auth = require('../middlewares/auth')
 const router = express.Router()
-const fields = 'postId userId title content postedDate'
+const fields = {
+  _id: 0,
+  postId: 1,
+  userId: 1,
+  title: 1,
+  content: 1,
+  likes: { $size: '$likes' },
+  postedDate: 1,
+}
 
 router.get('', async (req, res) => {
-  const posts = await Posts.find().select(fields).sort({ postedDate: -1 })
+  const posts = await Posts.aggregate().project(fields).sort({ postId: -1 })
 
   res.json({ posts })
 })
 
 router.get('/:postId', async (req, res) => {
   const { postId } = req.params
-  const post = await Posts.find({ postId }).select(fields)
+  const post = await Posts.aggregate()
+    .match({ postId: Number(postId) })
+    .project(fields)
 
   res.json({ post })
 })
@@ -46,7 +56,7 @@ router.post('', auth, async (req, res) => {
   res.json(newPost)
 })
 
-router.put('/:postId', auth, async (req, res) => {
+router.patch('/:postId', auth, async (req, res) => {
   const { postId } = req.params
   const { userId, title, password, content } = req.body
 
@@ -64,6 +74,25 @@ router.delete('/:postId', auth, async (req, res) => {
   await Posts.deleteOne({ postId, password })
 
   res.json({ message: '삭제 완료' })
+})
+
+router.patch('/:postId/likes', auth, async (req, res) => {
+  const { postId } = req.params
+  const { nickname } = res.locals.user
+
+  const post = await Posts.findOne({ postId })
+
+  if (post.likes.includes(nickname)) {
+    post.likes.pull(nickname)
+    post.save()
+
+    return res.json({ message: '추천 취소' })
+  }
+
+  post.likes.push(nickname)
+  post.save()
+
+  return res.json({ message: '추천 완료' })
 })
 
 module.exports = router
