@@ -13,6 +13,32 @@ const fields = {
   postedDate: 1,
 }
 
+/**
+ * @swagger
+ * /posts:
+ *  get:
+ *    summary: 모든 게시글 조회
+ *    description: GET 방식으로 모든 게시글 조회
+ *    tags: [Posts]
+ *    responses:
+ *      200:
+ *        description: 모든 게시글 조회 성공
+ *
+ * /posts/{postId}:
+ *  get:
+ *    summary: 특정 게시글 조회
+ *    description: GET 방식으로 특정 게시글 조회
+ *    tags: [Posts]
+ *    parameters:
+ *    - name: postId
+ *      in: path
+ *      description: 게시글 번호
+ *      required: true
+ *      type: string
+ *    responses:
+ *      200:
+ *        description: 모든 게시글 조회 성공
+ */
 router.get('', async (req, res) => {
   const posts = await Posts.aggregate().project(fields).sort({ postId: -1 })
 

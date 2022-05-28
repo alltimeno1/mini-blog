@@ -1,6 +1,8 @@
 const express = require('express')
 const connect = require('./schemas')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
+const { swaggerUi, specs } = require('./swagger/swagger')
 const app = express()
 const port = 3000
 
@@ -15,10 +17,12 @@ const requestMiddleware = (req, res, next) => {
   next()
 }
 
+app.use(cors())
 app.use(express.static('static'))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 // app.use(requestMiddleware)
 
 app.use('/posts', postsRouter)

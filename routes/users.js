@@ -5,6 +5,41 @@ const router = express.Router()
 const schema = require('../schemas/validate_user')
 require('dotenv').config()
 
+/**
+ * @swagger
+ *
+ * /users/auth:
+ *  post:
+ *    summary: 로그인
+ *    description: POST 방식으로 로그인
+ *    tags: [Users]
+ *    consumes:
+ *    - application/json
+ *    produces:
+ *    - application/json
+ *    parameters:
+ *    - in: body
+ *      name: body
+ *      description: 아이디와 패스워드 입력
+ *      required: true
+ *      schema:
+ *        type: object
+ *        required:
+ *        - nickname
+ *        - password
+ *        properties:
+ *           nickname:
+ *             type: string
+ *             description : 아이디
+ *           password:
+ *             type: string
+ *             description : 비밀번호
+ *      responses:
+ *       200:
+ *        description: 로그인 성공
+ *       400:
+ *        description: 로그인 실패
+ */
 router.post('/auth', async (req, res) => {
   const { nickname, password } = req.body
 
@@ -16,7 +51,9 @@ router.post('/auth', async (req, res) => {
 
   const token = jwt.sign({ userId: user.userId }, process.env.JWT_SECRET_KEY)
   console.log(token)
-  res.cookie('authorization', 'Bearer ' + token)
+  res.cookie('authorization', 'Bearer ' + token, {
+    expires: new Date(Date.now() + 1800000),
+  })
   res.send('<a href="/posts">게시글 링크</a>')
 })
 
