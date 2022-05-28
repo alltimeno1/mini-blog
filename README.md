@@ -1,5 +1,9 @@
 # mini-blog
 
+### Swagger
+
+http://3.39.161.93:3000/api-docs
+
 ### API
 
 |Request URL|Method|Description|
