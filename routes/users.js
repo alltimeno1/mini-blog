@@ -2,7 +2,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const Users = require('../schemas/user')
 const router = express.Router()
-const Joi = require('joi')
+const schema = require('../schemas/validate_user')
 require('dotenv').config()
 
 router.post('/auth', async (req, res) => {
@@ -22,16 +22,6 @@ router.post('/auth', async (req, res) => {
 
 router.post('/new', async (req, res) => {
   const { nickname, password, confirmPassword } = req.body
-  const schema = Joi.object({
-    nickname: Joi.string().alphanum().min(3).required(),
-    password: Joi.string()
-      .custom((value, helpers) =>
-        value.includes('abc') ? helpers.error('invalid password') : value
-      )
-      .min(4)
-      .required(),
-    confirmPassword: Joi.ref('password'),
-  })
 
   try {
     await schema.validateAsync({ nickname, password, confirmPassword })

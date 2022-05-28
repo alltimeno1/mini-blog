@@ -1,0 +1,44 @@
+[
+  {
+    "message": "아이디 최소 3글자 이상",
+    "nickname": "ab", 
+    "password": "ab123", 
+    "confirmpassword": "ab123"
+  },
+  {
+    "message": "아이디 영어 혹은 숫자",
+    "nickname": "아이디", 
+    "password": "ab123", 
+    "confirmpassword": "ab123"
+  },
+  {
+    "message": "비밀번호에 아이디 포함 금지",
+    "nickname": "abc", 
+    "password": "abc123", 
+    "confirmpassword": "abc123"
+  },
+  {
+    "message": "비밀번호 최소 4글자 이상",
+    "nickname": "abcd", 
+    "password": "abc", 
+    "confirmpassword": "abc"
+  },
+  {
+    "message": "비밀번호와 확인 비밀번호는 동일",
+    "nickname": "abc", 
+    "password": "abc123", 
+    "confirmpassword": "abc12"
+  },
+  {
+    "message": "정상 입력값",
+    "nickname": "abcd", 
+    "password": "abc123", 
+    "confirmpassword": "abc123"
+  },
+  {
+    "message": "정상 입력값2",
+    "nickname": "abcde", 
+    "password": "abc1234", 
+    "confirmpassword": "abc1234"
+  }
+]

@@ -19,7 +19,7 @@ app.use(express.static('static'))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(requestMiddleware)
+// app.use(requestMiddleware)
 
 app.use('/posts', postsRouter)
 app.use('/posts', commentsRouter)
@@ -28,3 +28,5 @@ app.use('/users', usersRouter)
 app.listen(port, () => {
   console.log(port, '포트 실행')
 })
+
+module.exports = app
