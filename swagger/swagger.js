@@ -8,7 +8,7 @@ const options = {
       title: 'mini-blog',
       description: '간단한 블로그 기능을 포함한 웹사이트 API',
     },
-    host: 'localhost:3000',
+    host: '3.39.161.93',
     basePath: '/',
   },
   apis: ['./routes/*.js', './swagger/*.yaml'], //Swagger 파일 연동
