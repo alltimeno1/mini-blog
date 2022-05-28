@@ -5,7 +5,7 @@ const auth = require('../middlewares/auth')
 const router = express.Router()
 const fields = {
   _id: 0,
-  postId: 1,
+  nickname: 1,
   userId: 1,
   title: 1,
   content: 1,
@@ -13,32 +13,6 @@ const fields = {
   postedDate: 1,
 }
 
-/**
- * @swagger
- * /posts:
- *  get:
- *    summary: 모든 게시글 조회
- *    description: GET 방식으로 모든 게시글 조회
- *    tags: [Posts]
- *    responses:
- *      200:
- *        description: 모든 게시글 조회 성공
- *
- * /posts/{postId}:
- *  get:
- *    summary: 특정 게시글 조회
- *    description: GET 방식으로 특정 게시글 조회
- *    tags: [Posts]
- *    parameters:
- *    - name: postId
- *      in: path
- *      description: 게시글 번호
- *      required: true
- *      type: string
- *    responses:
- *      200:
- *        description: 모든 게시글 조회 성공
- */
 router.get('', async (req, res) => {
   const posts = await Posts.aggregate().project(fields).sort({ postId: -1 })
 
@@ -55,7 +29,8 @@ router.get('/:postId', async (req, res) => {
 })
 
 router.post('', auth, async (req, res) => {
-  const { userId, title, password, content } = req.body
+  const { title, password, content } = req.body
+  const { nickname } = res.locals.user
 
   const postsCount = await Counts.find({ countId: 'posts' })
 
@@ -70,7 +45,7 @@ router.post('', auth, async (req, res) => {
 
   const newPost = {
     postId,
-    userId,
+    nickname,
     title,
     password,
     content,
@@ -84,9 +59,10 @@ router.post('', auth, async (req, res) => {
 
 router.patch('/:postId', auth, async (req, res) => {
   const { postId } = req.params
-  const { userId, title, password, content } = req.body
+  const { nickname } = res.locals.user
+  const { title, password, content } = req.body
 
-  await Posts.updateOne({ postId, password }, { userId, title, content })
+  await Posts.updateOne({ postId, nickname, password }, { title, content })
 
   const post = await Posts.findOne({ postId })
 
@@ -95,9 +71,10 @@ router.patch('/:postId', auth, async (req, res) => {
 
 router.delete('/:postId', auth, async (req, res) => {
   const { postId } = req.params
+  const { nickname } = res.locals.user
   const { password } = req.body
 
-  await Posts.deleteOne({ postId, password })
+  await Posts.deleteOne({ postId, nickname, password })
 
   res.json({ message: '삭제 완료' })
 })

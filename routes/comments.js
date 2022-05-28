@@ -43,9 +43,9 @@ router.post('/:postId/comments', auth, async (req, res) => {
   res.json({ comment })
 })
 
-router.patch('/:postId/comments', auth, async (req, res) => {
-  const { postId } = req.params
-  const { content, commentId } = req.body
+router.patch('/:postId/comments/:commentId', auth, async (req, res) => {
+  const { postId, commentId } = req.params
+  const { content } = req.body
   const { nickname } = res.locals.user
 
   await Comments.updateOne({ postId, commentId, nickname }, { content })

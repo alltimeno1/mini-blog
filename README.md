@@ -16,6 +16,6 @@ http://3.39.161.93:3000/api-docs
 |/users/new|POST|회원가입|
 |/posts/:postId/comments|GET|특정 게시글 댓글 조회|
 |/posts/:postId/comments|POST|특정 게시글 댓글 작성|
-|/posts/:postId/comments|PATCH|특정 게시글 댓글 수정|
+|/posts/:postId/comments/:commentId|PATCH|특정 게시글 댓글 수정|
 |/posts/:postId/comments/:commentId|DELETE|특정 게시글 댓글 삭제|
 |/posts/:postId/likes|PATCH|특정 게시글 추천|
