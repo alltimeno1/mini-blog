@@ -40,5 +40,11 @@
     "nickname": "abcde", 
     "password": "abc1234", 
     "confirmpassword": "abc1234"
+  },
+  {
+    "message": "정상 입력값3",
+    "nickname": "test", 
+    "password": "1234", 
+    "confirmpassword": "1234"
   }
 ]

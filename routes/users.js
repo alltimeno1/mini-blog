@@ -2,7 +2,7 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const Users = require('../schemas/user')
 const router = express.Router()
-const schema = require('../schemas/validate_user')
+const validateUser = require('../schemas/validate_user')
 require('dotenv').config()
 
 /**
@@ -59,6 +59,7 @@ router.post('/auth', async (req, res) => {
 
 router.post('/new', async (req, res) => {
   const { nickname, password, confirmPassword } = req.body
+  const schema = validateUser(nickname)
 
   try {
     await schema.validateAsync({ nickname, password, confirmPassword })
