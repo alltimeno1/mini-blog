@@ -1,4 +1,4 @@
-/{postId}/comments:
+/posts/{postId}/comments:
   get:
     summary: 모든 게시글 댓글 조회
     parameters:
@@ -43,7 +43,7 @@
         description: 게시글 작성 성공
       400:
         description: 게시글 작성 실패
-/{postId}/comments/{commentId}:
+/posts/{postId}/comments/{commentId}:
   patch:
     summary: 댓글 수정
     description: PATCH 방식으로 댓글 수정
