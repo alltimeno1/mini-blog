@@ -28,27 +28,19 @@ app.post('/test/users/new', async (req, res) => {
 })
 
 describe('POST /test/users/new', () => {
-  cases.forEach((testCase) => {
-    const req = request.agent(app)
-    const { message, nickname, password, confirmPassword } = testCase
+  const req = request.agent(app)
 
-    it(message, (done) => {
-      req
-        .post('/test/users/new')
-        .set('Content-Type', 'application/json')
-        .set('Accept', 'application/json')
-        .send({ nickname, password, confirmPassword })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .then((res) => {
-          expect(res.body.nickname).to.equal(nickname)
-          expect(res.body.password).to.equal(password)
-          expect(res.body.confirmPassword).to.equal(confirmPassword)
-          done()
-        })
-        .catch((err) => {
-          done(err)
-        })
+  cases.forEach((testCase) => {
+    const { message, nickname, password, confirmPassword, statusCode } = testCase
+
+    it(message, async () => {
+      const res = await req.post('/test/users/new').send({ nickname, password, confirmPassword })
+
+      expect(res.statusCode).to.equal(statusCode)
+
+      if (res.body.message) {
+        console.log(message, '\n', res.body.message)
+      }
     })
   })
 })
