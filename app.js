@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const { swaggerUi, specs } = require('./swagger/swagger')
 const app = express()
-const port = 3000
+const port = 4000
 
 connect()
 
