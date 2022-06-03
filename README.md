@@ -2,7 +2,7 @@
 
 ### Swagger
 
-http://3.39.161.93:3000/api-docs
+http://3.39.161.93:4000/api-docs
 
 ### API
 
